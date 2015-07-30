@@ -44,4 +44,17 @@ public class LightService extends Service {
 
         manager.notify(1, notification);
     }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //关闭调节
+        if ( LightSettingActivity.manager!=null &&  LightSettingActivity.view !=null)
+            LightSettingActivity.manager.removeView(LightSettingActivity.view);
+    }
 }
