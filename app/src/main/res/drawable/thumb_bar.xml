@@ -6,9 +6,9 @@
 
     <!-- 焦点状态 -->
     <item android:state_focused="true"
-        android:drawable="@drawable/up" />
+        android:drawable="@drawable/bb" />
 
     <!-- 默认状态 -->
-    <item android:drawable="@drawable/up" />
+    <item android:drawable="@drawable/bb" />
 
 </selector>
