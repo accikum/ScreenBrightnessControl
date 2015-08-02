@@ -4,8 +4,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.lcw.screenbrightnesscontrol.R;
+import com.lcw.screenbrightnesscontrol.util.SharePerfenceUtil;
 
 
 /**
@@ -40,7 +44,7 @@ public class LightService extends Service {
         view = new View(getApplicationContext());
         view.setBackgroundColor(getResources().getColor(R.color.system_color_tran));
         mWindowManager.addView(view);
-
+        initBroadcast();
     }
     NotificationManager manager;
     @Override
@@ -57,12 +61,9 @@ public class LightService extends Service {
         notification.icon = R.drawable.ic_launcher;
         notification.number = 1;
 //        notification.flags = Notification.FLAG_AUTO_CANCEL;
-
         notification.setLatestEventInfo(getApplicationContext(), "屏幕亮度调节", "屏幕亮度调节控制器正在运行,点击查看设置", pendIntent);
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         manager.notify(111, notification);
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -74,6 +75,7 @@ public class LightService extends Service {
             mWindowManager.removeView(view);
             manager.cancel(111);
             Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+            unregisterReceiver(receiver);
         }
     }
 
@@ -101,6 +103,29 @@ public class LightService extends Service {
         }
         public void removeView(View v) {
             manager.removeView(v);
+        }
+    }
+
+    private ScreenBroadcastReceiver receiver;
+    public void initBroadcast(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        receiver = new ScreenBroadcastReceiver();
+        registerReceiver(receiver, filter);
+    }
+    private class ScreenBroadcastReceiver extends BroadcastReceiver {
+        private String action;
+        private SharePerfenceUtil spfUtil = SharePerfenceUtil.getInstance(getApplicationContext());
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            action = intent.getAction();
+            if (Intent.ACTION_SCREEN_OFF.equals(action)) { // 锁屏
+                if (spfUtil.getInt("alpha")>160){
+                    spfUtil.putInt("alpha",160);
+                }
+                LightService.view.setBackgroundColor(Color.argb(160, LightSettingActivity.red, LightSettingActivity.green, LightSettingActivity.blue));
+            }
         }
     }
 }

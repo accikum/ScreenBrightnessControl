@@ -1,7 +1,11 @@
 package com.lcw.screenbrightnesscontrol.light;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -30,7 +34,7 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
     private SeekBar seekBar_blue;
     private SeekBar seekBar_light;
 
-    SharePerfenceUtil spfUtil;
+    private SharePerfenceUtil spfUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,10 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.light_setting_activity);
         spfUtil = SharePerfenceUtil.getInstance(getApplicationContext());
+        if(spfUtil.getInt("first")==1){
+            spfUtil.putInt("alpha",123);
+            spfUtil.putInt("first",2);
+        }
         initView();
         intent = new Intent();
         intent.setClass(getApplicationContext(), LightService.class);
@@ -49,13 +57,13 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus==true) {
+        if (hasFocus == true) {
             seekBar_alpha.setProgress(spfUtil.getInt("alpha"));
             seekBar_red.setProgress(spfUtil.getInt("red"));
             seekBar_green.setProgress(spfUtil.getInt("green"));
             seekBar_blue.setProgress(spfUtil.getInt("blue"));
             seekBar_light.setProgress(spfUtil.getInt("light"));
-        }else {
+        } else {
             onBackPressed();
         }
     }
@@ -85,7 +93,6 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -100,11 +107,13 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
                 break;
         }
     }
-    private int alpha;
-    private int red;
-    private int green;
-    private int blue;
+
+    static int alpha;
+    static int red;
+    static int green;
+    static int blue;
     private int light;
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         alpha = seekBar_alpha.getProgress();
@@ -133,7 +142,7 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.seekBar_light:
                 light = seekBar_light.getProgress();
-                Settings.System.putInt(getContentResolver(),Settings.System.SCREEN_BRIGHTNESS_MODE,Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
                 Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, light);
                 break;
             default:
@@ -160,4 +169,12 @@ public class LightSettingActivity extends BaseActivity implements View.OnClickLi
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
+    public void shareApp() {
+        Uri uri = Uri.parse("smsto:");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+        intent.putExtra("sms_body", "分享的内容");
+        startActivity(intent);
+    }
+
 }
