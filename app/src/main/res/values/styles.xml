@@ -12,13 +12,13 @@
     </style>
 
     <style name="seekbar_style">
-        <item name="android:paddingLeft">20.0dip</item>
-        <item name="android:paddingTop">10.0dip</item>
-        <item name="android:paddingRight">20.0dip</item>
-        <item name="android:paddingBottom">10.0dip</item>
+        <item name="android:paddingLeft">10.0dip</item>
+        <item name="android:paddingTop">5.0dip</item>
+        <item name="android:paddingRight">10.0dip</item>
+        <item name="android:paddingBottom">5.0dip</item>
         <item name="android:maxHeight">4.0dip</item>
-        <item name="android:max">125</item>
-        <item name="android:progress">20</item>
+        <item name="android:max">255</item>
+        <item name="android:progress">0</item>
         <item name="android:secondaryProgress">0</item>
         <item name="android:thumbOffset">5.0dip</item>
         <item name="android:layout_centerVertical">true</item>
@@ -26,5 +26,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:progressDrawable">@drawable/seekbar_bg</item>
         <item name="android:thumb">@drawable/thumb_bar</item>
+    </style>
+
+    <style name="main_btn_style">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:background">@drawable/main_bth_bg</item>
+    </style>
+
+    <style name="color_image_view">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">20dp</item>
     </style>
 </resources>

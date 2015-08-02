@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="system_default_color_tran">#88111111</color>
-    <color name="system_color_tran">#2c559fff</color>
+    <color name="system_color_tran">#7b000000</color>
 
-
-    <color name="white">#ffffffff</color>
-    <color name="transparent">#00000000</color>
-    <color name="transparent_dark">#dd000000</color>
-    <color name="transparent_yellow">#dd333311</color>
-    <color name="progress_yellow">#ffffcc00</color>
+    <color name="progress_yellow">#ffffc700</color>
     <color name="progress_grey">#ff3f4557</color>
-    <color name="background">#ff1d2025</color>
 </resources>

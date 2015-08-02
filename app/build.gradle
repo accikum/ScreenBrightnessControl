@@ -6,14 +6,28 @@ android {
 
     defaultConfig {
         applicationId "com.lcw.screenbrightnesscontrol"
-        minSdkVersion 11
+        minSdkVersion 10
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
+
+    signingConfigs {
         release {
-            minifyEnabled false
+            storeFile file("E:\\lu_android\\AndroidStudioProjects\\myKey.jks")
+            storePassword "bHVjaGFuZ3dlaQ=="
+            keyAlias "Accikum"
+            keyPassword "QWNjaQ=="
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
